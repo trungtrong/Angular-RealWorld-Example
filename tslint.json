@@ -73,6 +73,9 @@
       "single"
     ],
     "trailing-comma": false,
+    "no-trailing-whitespace": false,
+    "no-string-literal": false,
+    "variable-name": false,
     "no-conflicting-lifecycle": true,
     "no-host-metadata-property": true,
     "no-input-rename": true,
