@@ -20,7 +20,7 @@
         <!-- <app-list-errors [errors]="errors"></app-list-errors> -->
 
         <form [formGroup]="authForm" (ngSubmit)="submitForm()">
-          <fieldset [disabled]="submitted && authForm.valid">
+          <fieldset>
           <!--
             + formGroup: represents ReactiveForm
             + formControlName: contains data of <input-field>
@@ -72,7 +72,7 @@
               </div> -->
             </fieldset>
 
-            <button type="submit" [disabled]="loading"
+            <button type="submit"
                 class="btn btn-lg btn-primary pull-xs-right">
               {{ title }}
             </button>

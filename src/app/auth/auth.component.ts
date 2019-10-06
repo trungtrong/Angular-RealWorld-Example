@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Errors, UserService } from '../core';
+import { UserService } from '../core';
 
 @Component({
   selector: 'app-auth-page',
@@ -70,8 +70,6 @@ export class AuthComponent implements OnInit {
           .subscribe(
             data => this.router.navigateByUrl('/'),
             err => {
-              console.log(222222, err);
-
               this.loading = false;
             }
           );
