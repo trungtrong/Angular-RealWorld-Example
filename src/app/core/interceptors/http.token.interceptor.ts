@@ -35,7 +35,7 @@ export class HttpTokenInterceptor implements HttpInterceptor {
       If have, add the additional [Authorization] property to HeadersConfig
     */
     if (token) {
-      headersConfig['Authorization'] = `${token}`;
+      headersConfig['Authorization'] = `Bearer ${token}`;
     }
 
     /*
