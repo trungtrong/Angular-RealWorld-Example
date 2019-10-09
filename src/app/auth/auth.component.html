@@ -72,7 +72,7 @@
               </div> -->
             </fieldset>
 
-            <button type="submit"
+            <button type="submit" [disabled]='authForm.invalid'
                 class="btn btn-lg btn-primary pull-xs-right">
               {{ title }}
             </button>

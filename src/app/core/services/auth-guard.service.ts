@@ -23,6 +23,10 @@ export class AuthGuard implements CanActivate {
 }
 
 /*
+  http://ngninja.com/posts/angular2-authguard
+
+  https://codeburst.io/using-angular-route-guard-for-securing-routes-eabf5b86b4d1
+
                     The Auth Guard works as a GUARD
 
   - The auth guard ensures that only authenticated users access specific

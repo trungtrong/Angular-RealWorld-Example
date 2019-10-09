@@ -408,8 +408,8 @@
       Create Home | Settings | Log out in the case User logged out
 
 -------------------------------------------------------------------------
-    <STEP-6>: Make a <Logout- section> and <Keep- User login whenever Reloading / Refreshing>
-
+    <STEP-6>:
+    Make a <logout-section> and <Keep- User login whenever Reloading / Refreshing>
   <s-1>: Make a <Log-out> functionality in nav-bar
       1 - In <Header-component.ts> make a log-out function
 
@@ -425,4 +425,53 @@
       }
     }
 
+-------------------------------------------------------------------------
+    <STEP-7>: make a Settings component
+  + View profile 
+  + Edit and update Profile
+  => Need 
+  + update user/:id
+  + Lack: get user info (_id, username, bio, image, ...)
 </pre>
+
+
+
+<x--------------------------->
+
+To enable preloading of all lazy loaded modules, import the PreloadAllModules token from the Angular router package.
+<z----- src/app/app-routing.module.ts (preload all)>
+RouterModule.forRoot(
+  appRoutes,
+  {
+    enableTracing: true, // <-- debugging purposes only
+    preloadingStrategy: PreloadAllModules
+  }
+)
+
+
+<x--------------------------->
+
+https://medium.com/@shairez/angular-routing-a-better-pattern-for-large-scale-apps-f2890c952a18
+<z------------------------------lazy-loading>
+
+  Component Parent
+    |_ ComponentChild
+  
+  RoutingParent
+    |_ RoutingChild
+
+  
+<z------------------------------eager>
+
+
+<z-----------------------------look-see>
+
+ RouterModule.forChild([
+      { path: 'settings', component: SettingsComponent}
+    ])
+===> for children component
+
+ RouterModule.forRoot([
+      { path: 'settings', component: SettingsComponent}
+    ])
+=====> for AppComponent

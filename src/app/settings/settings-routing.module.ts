@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './home.component';
+import { SettingsComponent } from './settings.component';
+import { AuthGuard } from '../core';
+
 
 const routes: Routes = [
   {
-    path: '',
-    component: HomeComponent
-     // alone => localhost:4200/ => Home= <router-outlet>
+    path: 'settings',
+    component: SettingsComponent,
+    canActivate: [AuthGuard]
   }
 ];
 
@@ -14,5 +16,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-
-export class HomeRoutingModule {}
+export class SettingsRoutingModule { }

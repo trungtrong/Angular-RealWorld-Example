@@ -88,7 +88,7 @@ export class UserService {
     }
   }
 
-  // update user's info on Profile
+  // update entire user's info on Profile
   // update the user on the server (email, pass, etc)
   updateUser(user): Observable<User> {
     return this._apiService.put('/user', { user })
@@ -98,6 +98,8 @@ export class UserService {
         return data;
       }));
   }
+
+  // quan trong la o server xu ly ra sao
 
 }
 

@@ -4,11 +4,10 @@ import { AuthGuard } from './core';
 
 
 const routes: Routes = [
-  // add HomeRouting
   {
-    path: '', // = <router-outlet>
-    loadChildren: () => import('../app/home/home.module')
-        .then(m => m.HomeModule),
+    path: 'user',
+    loadChildren: () => import('../app/settings/settings.module')
+        .then(m => m.SettingsModule)
   }
 ];
 

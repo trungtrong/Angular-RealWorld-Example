@@ -12,12 +12,12 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   private setHeaders() {
-    const headersCofig = {
+    const headersConfig = {
       'Content-Type': 'application/json',
       Accept: 'application/json'
     };
 
-    return new HttpHeaders(headersCofig);
+    return new HttpHeaders(headersConfig);
   }
 
   private formatErrors(error: any) {
@@ -50,6 +50,14 @@ export class ApiService {
     ).pipe(catchError(this.formatErrors));
   }
 
+  // PATCH request
+  patch(path: string, body: object= {}):Observable<any> {
+    return this.http.patch(
+      `${environment.api_url}${path}`,
+      JSON.stringify(body)
+    ).pipe(catchError(this.formatErrors));
+  }
+
   // delete
   delete(path): Observable<any> {
     return this.http.delete(`${environment.api_url}${path}`)
@@ -68,12 +76,12 @@ export class ApiService {
   //    STEP 1: ser Headers
 
   private setHeaders() {
-    const headersCofig = {
+    const headersConfig = {
       'Content-Type': 'application/json',
       Accept: 'application/json'
     };
 
-    return new HttpHeaders(headersCofig);
+    return new HttpHeaders(headersConfig);
   }
 
   // STEP 2: handle ERROR
