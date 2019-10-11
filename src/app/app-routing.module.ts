@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AuthGuard } from './core';
 
 
 const routes: Routes = [
   {
-    path: 'user',
+    path: '',
     loadChildren: () => import('../app/settings/settings.module')
         .then(m => m.SettingsModule)
   }

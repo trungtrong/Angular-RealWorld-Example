@@ -12,15 +12,24 @@ export class AuthGuard implements CanActivate {
               private _userService: UserService) {}
 
   canActivate(route: ActivatedRouteSnapshot,
-              stable: RouterStateSnapshot): Observable<boolean> {
+              state: RouterStateSnapshot): boolean | any {
 
     /*
       take the First emitted value of response User's data from server
       in the case log-in is valid
     */
-    return this._userService.isAuthenticated.pipe(take(1));
+   return this._userService.isAuthenticated$.pipe(take(1));
   }
 }
+/*
+  Note: auth-guard is executed before getUser.subscribe()
+  => therefore, it doesn't have data
+
+  =========> Have never Solution for this (10/10/2019)
+
+*/
+
+
 
 /*
   http://ngninja.com/posts/angular2-authguard

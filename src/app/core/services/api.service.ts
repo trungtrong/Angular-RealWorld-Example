@@ -51,7 +51,7 @@ export class ApiService {
   }
 
   // PATCH request
-  patch(path: string, body: object= {}):Observable<any> {
+  patch(path: string, body: object= {}): Observable<any> {
     return this.http.patch(
       `${environment.api_url}${path}`,
       JSON.stringify(body)

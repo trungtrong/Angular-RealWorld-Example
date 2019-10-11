@@ -1,5 +1,5 @@
-<pre>
-      <STEP-1-  Home page>
+
+      <step-1-  Home page>
                 --------------------------
   1 - List of tags
     <Home-folder>
@@ -74,7 +74,7 @@
       + Pagination for list of articles
     }
 
-             --------------------------
+             <z-------------------------->
   2 - Layout- <Footer-and Header>
     in <shared-folder>
     2-1- <First-> :  Show this for logged out users
@@ -85,7 +85,7 @@
           Sign in
         </a>
       </li>
-             --------------------------
+          <z-------------------------->
   3- Add to app.module.ts
     @NgModule({
       declarations: [
@@ -93,7 +93,8 @@
         FooterComponent,
         HeaderComponent,
       ]
-            --------------------------
+      <z-------------------------->
+
   4- Add <main.css-in index.html>
 
   5- <Task-2> List of articles pulled from either Feed, Global, or by Tag
@@ -187,7 +188,7 @@
       + and add <app-Routing-module> to <app-module>
       + and add <router-outlet></router-outlet> to <app-.comp.html>
 
--------------------------------------------------------------------------
+<z-------------------------------------------------------------------------
 
     <STEP-2> <Login-and-Register-Pages>
       - Sign in/Sign up pages (URL: /#/login, /#/register )
@@ -248,7 +249,7 @@
         </a>
       </li>
 
--------------------------------------------------------------------------
+<z-------------------------------------------------------------------------
 
     <STEP-3> <How-to Service for Interacting and Authenticating with a Server>
 
@@ -318,9 +319,9 @@
 
         7-2: edit in api.service.ts
             private formatErrors(error: any) {
-              return throwError(error.error);
+              return throwError(error.error); }
 
--------------------------------------------------------------------------
+<z-------------------------------------------------------------------------
 
     <STEP-4> <Using-directives to SHOW / HIDE Elements for Authenticated Users>
 
@@ -336,8 +337,8 @@
       PURPOSE:  Using ShowAuthedDirective to confirm whether my apps
                 is on <Logged-in status> or Register status
 
--------------------------------------------------------------------------
-    <STEP-5>: Retrieving, Storing and Utilizing a <JWT> for User Authentication
+<z-------------------------------------------------------------------------
+    <step-5>: Retrieving, Storing and Utilizing a <JWT> for User Authentication
 
      5 - 1 - When a user logs into a service, the server checks the user’s credentials.
         + If successful, the server encodes the key user data, such as a user ID or the user’s email address into a JSON string. The string is then signed using a secret key. This data is the JSON Web Token. It can be sent back to the client and used by the client to authenticate itself.
@@ -407,8 +408,8 @@
      Edit <header.-component.html>
       Create Home | Settings | Log out in the case User logged out
 
--------------------------------------------------------------------------
-    <STEP-6>:
+<z-------------------------------------------------------------------------
+    <step-6>:
     Make a <logout-section> and <Keep- User login whenever Reloading / Refreshing>
   <s-1>: Make a <Log-out> functionality in nav-bar
       1 - In <Header-component.ts> make a log-out function
@@ -425,19 +426,207 @@
       }
     }
 
--------------------------------------------------------------------------
-    <STEP-7>: make a Settings component
-  + View profile 
+<z-------------------------------------------------------------------------
+    <step-7>: make a Settings component
+  + View profile
   + Edit and update Profile
-  => Need 
+  => Need
   + update user/:id
   + Lack: get user info (_id, username, bio, image, ...)
-</pre>
+
+export class SettingsComponent implements OnInit {
+  user: User = { } as User;
+  settingsForm: FormGroup;
+  isSubmitting = false;
+
+  constructor(private _router: Router,
+              private _userService: UserService,
+              private fb: FormBuilder) {
+
+    // create form group using the form builder
+    this.settingsForm = this.fb.group({
+      username: ['', Validators.required],
+      email: ['', Validators.required],
+      bio: ''
+  });
+  }
+
+  ngOnInit() {
+    /* make a fresh copy of the current user's object
+     to place in editable form fields
+     make a GET Request
+    this._userService.getUser();
+    ==> we need to GET data into subscribe()
+    + B/c When get data out of subscriber in Observable
+      We must place them into <subscribe- method
+
+    */
+
+    let userInfo;
+    this._userService.getCurrentUser()
+        .subscribe(user => {
+          userInfo = user;
+
+          Object.assign(this.user, userInfo);
+
+          console.log(this.user);
+          // fill the form
+          this.settingsForm.patchValue(this.user);
+        });
+  }
+
+<s-2--------------------update form >
+  updateForm() {
+    this.isSubmitting = true;
+
+     /* update the model */
+    const dataIsUpdated = this.settingsForm.value;
+
+    this._userService
+        .updateUser(dataIsUpdated)
+        .subscribe(
+          updatedUser => this._router.navigate(['/settings']),
+          err => {
+            console.log(err);
+            this.isSubmitting = false;
+          }
+        );
+  }
+
+  <in-user.service.ts>
+      updateUser(newData): Observable<User> {
+        return this._apiService.put('/user', newData )
+          .pipe(map(data => {
+             /* update the current User Observable */
+            this.currentUserSubject.next(data);
+            return data;
+          }));
+      }
 
 
 
-<x--------------------------->
+<z-------------------------------------------------------------------------
+  <step-8>: Make <profile-component>
 
+<s-1------------> <make-model>: core/models/profile.model.ts
+        export interface Profile {
+          username: string;
+          image: string;
+          bio: string;
+          following: boolean;
+        }
+
+<s-2------------> <profile-component.html>
+
+<s-3------------> Using <resolve-guard> fo pre-fetch data ::before
+        go to <profile-page>
+
+  <first-> profile-resolver.service.ts
+
+  export class ProfileResolver implements Resolve<Profile | never>  {
+    constructor(
+      private _profileService: ProfileService,
+      private _router: Router
+    ) {}
+
+    resolve(
+      route: ActivatedRouteSnapshot,
+      state: RouterStateSnapshot
+    ): Observable<any>  {
+
+      /* https://angular.io/guide/router#resolve-guard */
+      return this._profileService.getProfile(route.params['username'])
+      .pipe(
+        catchError((err) => this._router.navigateByUrl('/'))
+      );
+    }
+  }
+
+  <second-> profile.service.ts
+ ===> to make a GET request to server
+
+        export class ProfileService {
+          constructor(
+            private _apiService: ApiService
+          ) {}
+
+          getProfile(username: string): Observable<Profile> {
+            const nameWithoutBlank = username.split(' ').join('');
+
+            return this._apiService.get('/profiles/' + nameWithoutBlank)
+              .pipe(
+                map(profile => profile)
+              );
+          }
+        }
+
+  <third-> import ProfilePageComponent and ProfileResolver
+
+        import { ProfilePageComponent } from './profile-component/profile.component';
+        import { ProfileResolver } from './profile-resolver.service';
+
+        export const PROFILES_ROUTE = [
+          {
+            path: ':username',
+            component: ProfilePageComponent,
+            resolve: {
+              profile: ProfileResolver
+            }
+          }
+        ]
+
+  <fourth-> import routing to profile.module.ts
+        imports: [
+          RouterModule.forChild(PROFILES_ROUTE)
+        ],
+
+  <fifth-> In profile.component.ts
+      Get data from profile-resolver.service
+      export class ProfilePageComponent implements OnInit {
+        profile;
+        currentUser: User;
+        isUser: boolean;
+
+        constructor(
+          private _userService: UserService,
+          private _route: ActivatedRoute
+        ) {
+          /* resolve Data from profile-resolver */
+          const resolvedData: any = this._route.snapshot.data['profile'];
+
+          /* if resolvedData = empty */
+          if (resolvedData === {}) {
+            this.isUser = false;
+            console.error(resolvedData);
+          } else {
+            this.profile = resolvedData;
+            this.isUser = true;
+          }
+        }
+
+        ngOnInit() {
+        }
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+<problem------------------------------------------------------------------>
+<problem------------------------------------------------------------------>
+<problem------------------------------------------------------------------>
+<problem------------------------------------------------------------------>
+<problem------------------------------------------------------------------>
+<problem------------------------------------------------------------------>
+<problem------------------------------------------------------------------>
+<problem------------------------------------------------------------------>
 To enable preloading of all lazy loaded modules, import the PreloadAllModules token from the Angular router package.
 <z----- src/app/app-routing.module.ts (preload all)>
 RouterModule.forRoot(
@@ -450,17 +639,18 @@ RouterModule.forRoot(
 
 
 <x--------------------------->
+<Problem- Reloading page but it goes to the /home page>
 
 https://medium.com/@shairez/angular-routing-a-better-pattern-for-large-scale-apps-f2890c952a18
 <z------------------------------lazy-loading>
 
   Component Parent
     |_ ComponentChild
-  
+
   RoutingParent
     |_ RoutingChild
 
-  
+
 <z------------------------------eager>
 
 
@@ -475,3 +665,44 @@ https://medium.com/@shairez/angular-routing-a-better-pattern-for-large-scale-app
       { path: 'settings', component: SettingsComponent}
     ])
 =====> for AppComponent
+
+
+<z------------------------------look-see>
+    when we <reload-settings page>
+  => it's also a part of AppComponent
+  => it's also make getUser()
+
+<x--------------------------->
+<problem- appAuth: show-authed.directive.ts>
+
+ Home Signin Sign up => Home Settings Logout
+
+
+<x--------------------------->
+<problem- When get data from subscriber in Observale>
+    We must place them into <subscribe- method>
+
+
+ngOnInit() {
+    <!-- make a fresh copy of the current user's object
+    to place in editable form fields -->
+    let userInfo;
+    this._userService.getCurrentUser()
+        .subscribe(user => {
+          userInfo = user;
+
+          Object.assign(this.user, userInfo);
+
+          console.log(this.user);
+          // fill the form
+          this.settingsForm.patchValue(this.user);
+        });
+  }
+
+<x--------------------------->
+              <problem---- ERROR>
+  StaticInjectorError(Platform: core)[ProfileResolver -> ProfileService]:
+  NullInjectorError: No provider for ProfileService!
+
+<solution-------: In core.module.ts >
+  providers: [ ProfileService]

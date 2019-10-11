@@ -8,6 +8,7 @@ import {
   UserService,
   AuthGuard,
   JwtService,
+  ProfileService,
 } from './services';
 
 @NgModule({
@@ -25,7 +26,8 @@ import {
     JwtService,
     httpInterceptorProviders,
 
-    AuthGuard
+    AuthGuard,
+    ProfileService
   ]
 })
 

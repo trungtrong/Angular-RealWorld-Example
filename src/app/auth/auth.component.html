@@ -28,7 +28,7 @@
             <fieldset class="form-group">
               <!-- authType=register => form will appear -->
               <input *ngIf="authType === 'register'"
-                  type="text"
+                  type="text" name="name"
                   formControlName="username"
                   placeholder="Username"
                   class="form-control form-control-lg"
@@ -43,7 +43,7 @@
             </fieldset>
 
             <fieldset class="form-group">
-              <input type="email"
+              <input type="email" name="email"
                   formControlName="email"
                   placeholder="Email"
                   class="form-control form-control-lg"

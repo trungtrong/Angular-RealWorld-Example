@@ -28,22 +28,31 @@ export class SettingsComponent implements OnInit {
   ngOnInit() {
     // make a fresh copy of the current user's object
     // to place in editable form fields
-    Object.assign(this.user, this._userService.getCurrentUser());
+    // make a GET Request
+    // this._userService.getUser();
+    let userInfo;
+    this._userService.getCurrentUser()
+        .subscribe(user => {
+          userInfo = user;
 
-    // fill the form
-    this.settingsForm.patchValue(this.user);
+          Object.assign(this.user, userInfo);
+
+          console.log(this.user);
+          // fill the form
+          this.settingsForm.patchValue(this.user);
+        });
   }
 
   updateForm() {
     this.isSubmitting = true;
 
     // update the model
-    Object.assign(this.user, this.settingsForm.value);
+    const dataIsUpdated = this.settingsForm.value;
 
     this._userService
-        .updateUser(this.user)
+        .updateUser(dataIsUpdated)
         .subscribe(
-          updatedUser => this._router.navigateByUrl('/profile/' + updatedUser.username),
+          updatedUser => this._router.navigate(['/settings']),
           err => {
             console.log(err);
             this.isSubmitting = false;

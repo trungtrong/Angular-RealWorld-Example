@@ -6,10 +6,28 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { ListErrorsComponent } from './list-errors/list-errors.component';
-import { ShowAuthedDirective } from './directives/show-authed.directive';
+
+import {
+  ShowAuthedDirective
+} from './directives';
+
+import {
+  StringWithoutSpacePipe
+} from './pipes';
+
+const DIRECTIVES = [
+  ShowAuthedDirective
+];
+
+const PIPES = [
+  StringWithoutSpacePipe
+];
+
 
 @NgModule({
   imports: [
+    // https://stackoverflow.com/questions/45724051/template-parse-errors-cant-bind-to-directive-since-it-isnt-a-known-property-o
+    // add CommonModule b/c it is the SharedModule
     CommonModule,
 
     // Step 2: login and register
@@ -27,8 +45,9 @@ import { ShowAuthedDirective } from './directives/show-authed.directive';
     // Step 3
     ListErrorsComponent,
 
-    // step 4
-    ShowAuthedDirective
+    // // step 4
+    ...DIRECTIVES,
+    ...PIPES,
 
   ],
   exports: [
@@ -46,8 +65,8 @@ import { ShowAuthedDirective } from './directives/show-authed.directive';
 
     ListErrorsComponent,
 
-    ShowAuthedDirective
-
+    ...DIRECTIVES,
+    ...PIPES,
   ]
 })
 

@@ -9,6 +9,9 @@ import { FooterComponent, HeaderComponent, SharedModule } from './shared';
 import { HomeModule } from './home/home.module';
 import { AuthModule } from './auth/auth.module';
 import { CoreModule } from './core';
+import { RouterModule } from '@angular/router';
+import { APP_ROUTES } from './app.routes';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,14 +22,16 @@ import { CoreModule } from './core';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
+    FormsModule,
+    // AppRoutingModule,
+    RouterModule.forRoot(APP_ROUTES),
 
     HomeModule,
     AuthModule,
 
     CoreModule,
 
-    SharedModule
+    SharedModule,
   ],
 
   exports: [

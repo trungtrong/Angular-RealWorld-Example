@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError, Subject } from 'rxjs';
 import { distinctUntilChanged , map, catchError} from 'rxjs/operators';
 
 import { User } from '../models/user.model';
@@ -14,18 +14,19 @@ export class UserService {
   // contain current User's info
   private currentUserSubject = new BehaviorSubject<User>({} as User);
 
-  public currentUser = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
+  public currentUser$ = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
 
   // confirm that it has User or not
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
-  public isAuthenticated = this.isAuthenticatedSubject.asObservable();
+  public isAuthenticated$ = this.isAuthenticatedSubject.asObservable().pipe(distinctUntilChanged());
 
   constructor(private _apiService: ApiService,
               private _http: HttpClient,
-              private _jwtService: JwtService) {}
+              private _jwtService: JwtService) { }
 
-  getCurrentUser(): User {
-    return this.currentUserSubject.value;
+  getCurrentUser(): Observable<User> {
+    console.log('get current user');
+    return this.currentUser$;
   }
 
   // add data to Observable
@@ -75,6 +76,7 @@ export class UserService {
   */
    // STEP 5- <s-5>
   getUser() {
+    console.log('get user');
     // If JWT detected, try to get & store user's info
     if (this._jwtService.getToken()) {
       this._apiService.get('/user')
@@ -90,8 +92,8 @@ export class UserService {
 
   // update entire user's info on Profile
   // update the user on the server (email, pass, etc)
-  updateUser(user): Observable<User> {
-    return this._apiService.put('/user', { user })
+  updateUser(newData): Observable<User> {
+    return this._apiService.put('/user', newData )
       .pipe(map(data => {
         // update the current User Observable
         this.currentUserSubject.next(data);
