@@ -11,15 +11,6 @@ import { environment } from 'src/environments/environment';
 export class ApiService {
   constructor(private http: HttpClient) {}
 
-  private setHeaders() {
-    const headersConfig = {
-      'Content-Type': 'application/json',
-      Accept: 'application/json'
-    };
-
-    return new HttpHeaders(headersConfig);
-  }
-
   private formatErrors(error: any) {
     return throwError(error.error);
     /*
@@ -29,11 +20,10 @@ export class ApiService {
   }
 
   // don't need Headers, b/c in Interceptor has Header
-  post(path: string, body: object = {}, header?): Observable<any> {
+  post(path: string, body: object = {}): Observable<any> {
     return this.http.post(
       `${environment.api_url}${path}`,
-      JSON.stringify(body),
-      header
+      JSON.stringify(body)
     ).pipe(catchError(this.formatErrors));
   }
 
@@ -61,8 +51,9 @@ export class ApiService {
 
   // delete
   delete(path): Observable<any> {
-    return this.http.delete(`${environment.api_url}${path}`)
-            .pipe(catchError(this.formatErrors));
+    return this.http.delete(
+      `${environment.api_url}${path}`,
+    ).pipe(catchError(this.formatErrors));
   }
 
   /*

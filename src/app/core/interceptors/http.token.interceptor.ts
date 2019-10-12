@@ -4,6 +4,7 @@ import { HttpInterceptor, HttpEvent, HttpHandler, HttpRequest } from '@angular/c
 import { Observable } from 'rxjs';
 
 import { JwtService } from '../services/jwt.service';
+import { UserService } from '../services';
 
 @Injectable()
 
@@ -11,17 +12,33 @@ import { JwtService } from '../services/jwt.service';
 
 export class HttpTokenInterceptor implements HttpInterceptor {
   // inject jwtService
-  constructor(private jwtService: JwtService) {}
+  constructor(
+    private jwtService: JwtService,
+    private _userService: UserService
+    ) {}
 
   /*
     The intercept() method could inspect that observable and alter it
     before returning it to the caller.
   */
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    let headersConfig;
+    /*
+    - If req.body = formData => headersConfig has only Accept
+    else re.body = JSON object => need 'Content-Type': 'application/json'
+    ==> b/c httpInterceptor is executed when we call HTTP Request
+     */
 
-    const headersConfig = {
-      Accept: 'application/json, text/plain, */*'
-    };
+    if (this._userService.isFormData) {
+      headersConfig = {
+        Accept: 'application/json'
+      };
+    } else {
+      headersConfig = {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      };
+    }
 
     /*
     - check if the current user is logged in
@@ -30,18 +47,20 @@ export class HttpTokenInterceptor implements HttpInterceptor {
     */
     const token = this.jwtService.getToken();
 
-    /*
-      If have, add the additional [Authorization] property to HeadersConfig
-    */
     if (token) {
       headersConfig['Authorization'] = `Bearer ${token}`;
     }
+    /*
+      If have, add the additional [Authorization] property to HeadersConfig
+    */
 
+    const request = req.clone({ setHeaders: headersConfig });
     /*
       clone the incoming request and add JWT token in the cloned
       request's Authorization header
+      // Clone the request and replace the original headers with
+      // cloned headers, updated with the authorization.
     */
-    const request = req.clone({ setHeaders: headersConfig });
 
     /*
       Most interceptors call next.handle() so that the request flows

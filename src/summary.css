@@ -688,8 +688,39 @@ export class SettingsComponent implements OnInit {
           );
       }
 
+<z-----problem>
+  4 - /*
+    headersConfig = {
+        Accept: 'application/json'
+      };
+  ==> we can login/ update/ getUser/ etc
+  b/c 'Content-Type': is not declared
+        =>  'Content-Type' : text/plain (default)
+   */
+  <solution-->
+    <so-step-1> in user.service.ts
+      isFormData = false;
 
+      updateUser(newData): Observable<User> {
+        this.isFormData = false;
+        ...
+      }
+    <so-step-2> in http.interceptor.ts
+        constructor(
+          private jwtService: JwtService,
+          private _userService: UserService
+          ) {}
 
+        if (this._userService.isFormData) {
+          headersConfig = {
+            Accept: 'application/json'
+          };
+        } else {
+          headersConfig = {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+          };
+        }
 
 <problem------------------------------------------------------------------>
 <problem------------------------------------------------------------------>

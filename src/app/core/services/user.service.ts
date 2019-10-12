@@ -20,6 +20,8 @@ export class UserService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable().pipe(distinctUntilChanged());
 
+  isFormData = false;
+
   constructor(private _apiService: ApiService,
               private _http: HttpClient,
               private _jwtService: JwtService) { }
@@ -44,6 +46,13 @@ export class UserService {
   // for login/ register = attemptAuth + router to '/'
   // for login/ register
   attemptAuth(type, credentials): Observable<User> {
+    /*
+    ==> b/c httpInterceptor is executed when we call HTTP Request
+    ==> b/c of this, we use { isFormData } to indicate content of header
+      in httpInterceptor
+    */
+    this.isFormData = false;
+
     const route = (type === 'login') ? '/login' : '/register';
     return this._apiService.post('/users' + route, credentials)
       .pipe(map(
@@ -76,6 +85,7 @@ export class UserService {
   */
    // STEP 5- <s-5>
   getUser() {
+    this.isFormData = false;
     console.log('get user');
     // If JWT detected, try to get & store user's info
     if (this._jwtService.getToken()) {
@@ -93,6 +103,8 @@ export class UserService {
   // update entire user's info on Profile
   // update the user on the server (email, pass, etc)
   updateUser(newData): Observable<User> {
+    this.isFormData = false;
+
     return this._apiService.put('/user', newData )
       .pipe(map(data => {
         // update the current User Observable
@@ -105,6 +117,7 @@ export class UserService {
     Submit FormData
   */
   uploadAvatar(image): Observable<any> {
+    this.isFormData = true;
     return this._apiService.postFormData('/user/avatar', image)
       .pipe(
         map(data => data)
