@@ -29,10 +29,11 @@ export class ApiService {
   }
 
   // don't need Headers, b/c in Interceptor has Header
-  post(path: string, body: object = {}): Observable<any> {
+  post(path: string, body: object = {}, header?): Observable<any> {
     return this.http.post(
       `${environment.api_url}${path}`,
-      JSON.stringify(body)
+      JSON.stringify(body),
+      header
     ).pipe(catchError(this.formatErrors));
   }
 
@@ -62,6 +63,16 @@ export class ApiService {
   delete(path): Observable<any> {
     return this.http.delete(`${environment.api_url}${path}`)
             .pipe(catchError(this.formatErrors));
+  }
+
+  /*
+    Submit FormData
+  */
+  postFormData(path: string, body): Observable<any> {
+    return this.http.post(
+      `${environment.api_url}${path}`,
+      body
+    ).pipe(catchError(this.formatErrors));
   }
 }
 

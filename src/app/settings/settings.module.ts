@@ -5,7 +5,6 @@ import { SharedModule, AuthGuard } from '../shared';
 import { SettingsComponent } from './settings.component';
 import { RouterModule } from '@angular/router';
 import { SETTINGS_ROUTE } from './settings.route';
-import { CommonModule } from '@angular/common';
 
 
 @NgModule({

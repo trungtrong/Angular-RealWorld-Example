@@ -55,7 +55,15 @@
         <a class="nav-link"
           [routerLink]= "['/profile/' + currentUser?.username?.split(' ').join('')]"
           routerLinkActive="active">
-          <img alt="" width="30" height=30>
+
+          <img src="currentUser.image == null ? '' : profile.image"
+            class="avatar rounded-circle"
+            *ngIf="currentUser.image != null"/>
+
+          <span style="background: #999;" width="30px" height="30px"
+            class="avatar rounded-circle"
+            *ngIf="currentUser.image == null">
+          </span>
           {{ currentUser?.username }}
         </a>
       </li>

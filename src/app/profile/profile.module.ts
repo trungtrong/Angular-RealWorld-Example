@@ -13,7 +13,6 @@ import { ProfileResolver } from './profile-resolver.service';
   ],
   imports: [
     SharedModule,
-
     RouterModule.forChild(PROFILES_ROUTE)
   ],
   exports: [],

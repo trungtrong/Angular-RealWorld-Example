@@ -5,7 +5,14 @@
       <div class="row">
 
         <div class="col-xs-12 col-md-10 offset-md-1">
-          <img [src]="profile?.image" class="user-img" />
+          <img src="profile.image == null ? '' : profile.image"
+            class="avatar rounded-circle"
+            *ngIf="profile.image != null"/>
+          <span style="height: 9rem; width: 9rem;
+              background: #999; display: inline-block;"
+            class="avatar rounded-circle"
+            *ngIf="profile.image == null">
+          </span>
           <h4>{{ profile?.username }}</h4>
           <p>{{ profile?.bio }}</p>
 
@@ -54,6 +61,20 @@
         </div>
 
         <!-- <router-outlet></router-outlet> -->
+
+        <div>
+          <form>
+            <input type="file" name="avatar" id="avatar" style="display: none;"
+              (change)="selectImage($event)" #fileInput>
+            <button type="button" (click)="fileInput.click()">
+              Choose a Photo
+            </button>
+            <button type="submit" (click)="onSubmit()">
+              Upload
+            </button>
+          </form>
+        </div>
+
       </div>
 
     </div>

@@ -609,12 +609,84 @@ export class SettingsComponent implements OnInit {
       }
 
 
+<z-------------------------------------------------------------------------
+      <step-9>: <uploading-file FormData>
 
+<note---------->: We have a problem
+  We can't upload FormData to server NodeJS
+      <reason-->
+1------ B/c we use post() with body as JSON
+  put(path: string, body: object= {}): Observable<any> {
+    return this.http.put(
+      `${environment.api_url}${path}`,
+      JSON.stringify(body)
+    );
+  =========> Wrong
+  =========> B/c  Angular 6 was submitting file <as-binary> instead of form data.
+        not JSON
+    see: Body = avatar: (binary)
 
+2------ in http.token.interceptor.ts
+      const headersConfig = {
+        'Content-Type: 'application/json, multiple/form-data’,
+        Accept: 'application/json, text/plain, */*'
+      };
 
+  =======> Wrong:
+  =======> It will override the default Header of FormData
+      + boundary will gone
+      + referer: will gone
 
+  =======>With FormData, Angular configure Header =
+  'content-type': 'multipart/form-data; boundary=----WebKitFormBoundaryfqULmTZjQcqcdSlW',
+      referer: 'http://localhost:4200/?avatar=HinhNen.jpg',
 
+      ==> Therefore, we don't need to add 'content-type'
+        to Header in http.token.interceptor.ts
 
+      <solution--------------------->
+1 - in api.service.ts
+  /*
+    Submit FormData
+  */
+  postFormData(path: string, body): Observable<any> {
+    return this.http.post(
+      `${environment.api_url}${path}`,
+      body
+    ).pipe(catchError(this.formatErrors));
+  }
+    <z---------------------------->
+2 - in user.service.ts
+  /*
+    Submit FormData
+  */
+  uploadAvatar(image): Observable<any> {
+    return this._apiService.postFormData('/user/avatar', image)
+      .pipe(
+        map(data => data)
+      );
+  }
+  <z---------------------------->
+3 - in profile.component.ts
+      avatar: File;
+
+      selectImage(event) {
+        if (event.target.files.length > 0) {
+          this.avatar = event.target.files[0] as File;
+        }
+      }
+
+      onSubmit() {
+        const formData =  new FormData();
+        formData.append('avatar', this.avatar, this.avatar.name);
+
+         /* upload image to server */
+        this._userService.uploadAvatar(formData)
+          .subscribe(
+            (res) => console.log(res),
+            (err) => console.log(err)
+          );
+      }
 
 
 

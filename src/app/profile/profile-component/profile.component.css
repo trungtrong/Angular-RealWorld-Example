@@ -1,0 +1,11 @@
+.avatar {
+  border: 0.3rem solid rgba(250, 250, 250, 0.6);
+  /* max-width: 9rem; */
+  width: 9rem;
+  height: 9rem;
+
+}
+
+.rounded-circle {
+  border-radius: 50%!important;
+}

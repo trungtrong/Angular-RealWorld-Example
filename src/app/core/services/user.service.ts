@@ -101,7 +101,16 @@ export class UserService {
       }));
   }
 
-  // quan trong la o server xu ly ra sao
+  /*
+    Submit FormData
+  */
+  uploadAvatar(image): Observable<any> {
+    return this._apiService.postFormData('/user/avatar', image)
+      .pipe(
+        map(data => data)
+      );
+  }
+
 
 }
 
