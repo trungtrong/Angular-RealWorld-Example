@@ -1,10 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService, User } from 'src/app/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { NgForm } from '@angular/forms';
 
-import { ActivatedRoute } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile-page',
@@ -26,7 +23,7 @@ export class ProfilePageComponent implements OnInit {
   constructor(
     private _userService: UserService,
     private _route: ActivatedRoute,
-
+    private _router: Router
   ) {
     // resolve Data from profile-resolver
     const resolvedData: any = this._route.snapshot.data['profile'];
@@ -57,14 +54,13 @@ export class ProfilePageComponent implements OnInit {
     // upload image to server
     this._userService.uploadAvatar(formData)
       .subscribe(
-        (res) => console.log(res),
-        (err) => console.log(err)
+        data => {
+          this.profile = data;
+        },
+        err => console.log(err)
       );
   }
-
 }
-
-
 
 /* Keep : Save
   console.log('1111', this._route.snapshot);

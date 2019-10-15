@@ -56,8 +56,8 @@
           [routerLink]= "['/profile/' + currentUser?.username?.split(' ').join('')]"
           routerLinkActive="active">
 
-          <img src="currentUser.image == null ? '' : profile.image"
-            class="avatar rounded-circle"
+          <img [src]="currentUser.image == null ? '' : currentUser.image"
+            class="avatar rounded-circle" width="50" height="50"
             *ngIf="currentUser.image != null"/>
 
           <span style="background: #999;" width="30px" height="30px"

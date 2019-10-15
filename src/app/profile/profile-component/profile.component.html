@@ -5,7 +5,7 @@
       <div class="row">
 
         <div class="col-xs-12 col-md-10 offset-md-1">
-          <img src="profile.image == null ? '' : profile.image"
+          <img [src]="profile.image == null ? '' : profile.image"
             class="avatar rounded-circle"
             *ngIf="profile.image != null"/>
           <span style="height: 9rem; width: 9rem;
@@ -64,8 +64,9 @@
 
         <div>
           <form>
+            <!-- accept="image/*" => it's only accept image file -->
             <input type="file" name="avatar" id="avatar" style="display: none;"
-              (change)="selectImage($event)" #fileInput>
+              (change)="selectImage($event)" #fileInput accept="image/*" >
             <button type="button" (click)="fileInput.click()">
               Choose a Photo
             </button>

@@ -120,7 +120,10 @@ export class UserService {
     this.isFormData = true;
     return this._apiService.postFormData('/user/avatar', image)
       .pipe(
-        map(data => data)
+        map(data => {
+          this.currentUserSubject.next(data);
+          return data;
+        })
       );
   }
 
