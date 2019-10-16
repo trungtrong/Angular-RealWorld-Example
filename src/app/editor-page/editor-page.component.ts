@@ -33,17 +33,6 @@ export class EditorComponent implements OnInit {
   }
 
   ngOnInit() {
-    // If there's an article pre-fetched , load it
-    this._route.data.subscribe(
-      (data: Article ) => {
-        if (data) {
-          this.article = data;
-
-          // fill all of them
-          this.articleForm.patchValue(data);
-        }
-      }
-    );
   }
 
   updateArticle(values: object) {
