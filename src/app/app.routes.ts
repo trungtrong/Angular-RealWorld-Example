@@ -9,5 +9,10 @@ export const APP_ROUTES = [
   {
     path: 'profile',
     loadChildren: './profile/profile.module#ProfilesModule'
+  },
+
+  {
+    path: 'articles',
+    loadChildren: './editor-page/editor.module#EditorModule'
   }
 ]

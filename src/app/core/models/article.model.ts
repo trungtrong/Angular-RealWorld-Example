@@ -1,3 +1,5 @@
+import { Profile } from './profile.model';
+
 export interface Article {
   slug: string;  // oc sen
   title: string;
@@ -8,5 +10,5 @@ export interface Article {
   updatedAt: string;
   favorited: boolean;
   favoritesCount: number;
-  // author: Profile;
+  author: Profile;
 }

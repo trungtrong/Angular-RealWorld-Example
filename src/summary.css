@@ -722,6 +722,69 @@ export class SettingsComponent implements OnInit {
           };
         }
 
+3------ Retrieve avatar_url and perform it on apps
+
+
+
+<z-------------------------------------------------------------------------
+        <step-10>: Editor page to create/edit articles
+        (URL: /#/editor, /#/editor/article-slug-here )
+  <s10-1> Create the <editor-page>
+        See in github commit "create editor form and page"
+1 - Article model
+2- Article service
+  2-1: create
+  + save() for CREATE
+  + get() for EDIT or update
+
+  2-2: add <article-service> to index.ts
+        and <providers-> to <core.module.ts>
+
+3- create editor-page folder -> editor-page.component.html
+
+4 - create editor-page folder -> editor-page.component.ts
+  + updateArticle()
+  + submitForm()
+  + addTag() and removeTag()
+
+5 - create editable-article-resolver.service.ts
+  + for :slug (specific article)
+
+6 - create editor.route.ts
+  + contain an array of  path / component
+
+7 - create editor.module.ts
+  @NgModule({
+    imports: [
+      SharedModule,
+      RouterModule.forChild(EDITOR_ROUTES)
+    ],
+    declarations: [
+      EditorComponent
+    ],
+    providers: [
+      EditableArticleResolver
+    ]
+
+8 - in app.routes.ts
+  {
+    path: 'articles',
+    loadChildren: './editor-page/editor.module#EditorModule'
+  }
+
+9 - in header.comp.ts
+  + adding
+      <li class="nav-item">
+        <a class="nav-link"
+          routerLink="/articles"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">
+          Create Article
+        </a>
+      </li>
+
+
+
 <problem------------------------------------------------------------------>
 <problem------------------------------------------------------------------>
 <problem------------------------------------------------------------------>
