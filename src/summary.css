@@ -735,23 +735,71 @@ export class SettingsComponent implements OnInit {
 2- Article service
   2-1: create
   + save() for CREATE
-  + get() for EDIT or update
-
+      /* // update or create an article */
+        save(article: Article): Observable<Article> {
+          return this._apiService.post('/articles', article)
+              .pipe(map(
+                  data => data)
+              );
+        }
   2-2: add <article-service> to index.ts
         and <providers-> to <core.module.ts>
+
+
 
 3- create editor-page folder -> editor-page.component.html
 
 4 - create editor-page folder -> editor-page.component.ts
-  + updateArticle()
-  + submitForm()
-  + addTag() and removeTag()
+  4-1----- submitForm()
+  updateArticle(values: object) {
+    Object.assign(this.article, values);
+  }
 
-5 - create editable-article-resolver.service.ts
-  + for :slug (specific article)
+  submitForm() {
+    this.isSubmitting = true;
+
+    // update the model
+    this.updateArticle(this.articleForm.value);
+
+    // post the changes
+    this.articlesService.save(this.article)
+      .subscribe(
+        article => {
+          console.log('article = ', article);
+        },
+        error => {
+          this.isSubmitting = false;
+        }
+      );
+  }
+
+  4-2----- addTag() and removeTag()
+  addTag() {
+    // retrieve tag control
+    const tag = this.tagField.value;
+
+    // only add tag if it does not exist yet
+    if (this.article.tagList.indexOf(tag) === -1 ) {
+      this.article.tagList.push(tag);
+    }
+
+    // clear the input
+    this.tagField.reset('');
+  }
+
+  removeTag(tagName: string) {
+    this.article.tagList = this.article.tagList.filter(tag => tag !== tagName);
+  }
 
 6 - create editor.route.ts
   + contain an array of  path / component
+============
+  export const EDITOR_ROUTES = [
+    {
+      path: '',
+      component: EditorComponent
+    }
+  ];
 
 7 - create editor.module.ts
   @NgModule({

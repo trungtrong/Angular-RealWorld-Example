@@ -17,9 +17,7 @@ export class EditorComponent implements OnInit {
 
   constructor(
     private articlesService: ArticlesService,
-    private fb: FormBuilder,
-    private _route: ActivatedRoute,
-    private _router: Router
+    private fb: FormBuilder
   ) {
     // use the FormBuilder to create a form group
     this.articleForm = this.fb.group({
@@ -33,17 +31,6 @@ export class EditorComponent implements OnInit {
   }
 
   ngOnInit() {
-    // If there's an article pre-fetched , load it
-    this._route.data.subscribe(
-      (data: Article ) => {
-        if (data) {
-          this.article = data;
-
-          // fill all of them
-          this.articleForm.patchValue(data);
-        }
-      }
-    );
   }
 
   updateArticle(values: object) {
@@ -59,7 +46,9 @@ export class EditorComponent implements OnInit {
     // post the changes
     this.articlesService.save(this.article)
       .subscribe(
-        article => this._router.navigateByUrl('/article/' + article.slug),
+        article => {
+          console.log('article = ', article);
+        },
         error => {
           this.isSubmitting = false;
         }
@@ -71,7 +60,7 @@ export class EditorComponent implements OnInit {
     const tag = this.tagField.value;
 
     // only add tag if it does not exist yet
-    if (this.article.tagList.indexOf(tag) < 0 ) {
+    if (this.article.tagList.indexOf(tag) === -1 ) {
       this.article.tagList.push(tag);
     }
 

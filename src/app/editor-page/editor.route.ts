@@ -5,12 +5,5 @@ export const EDITOR_ROUTES = [
   {
     path: '',
     component: EditorComponent
-  },
-  {
-    path: ':slug',
-    component: EditorComponent,
-    resolve: {
-      article: EditableArticleResolver
-    }
   }
 ];
