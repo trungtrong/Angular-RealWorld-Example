@@ -727,7 +727,7 @@ export class SettingsComponent implements OnInit {
 
 
 <z-------------------------------------------------------------------------
-        <step-10>: Editor page to create/edit articles
+        <step-10>: Editor page to create/edit form articles
         (URL: /#/editor, /#/editor/article-slug-here )
   <s10-1> Create the <editor-page>
         See in github commit "create editor form and page"
@@ -832,6 +832,131 @@ export class SettingsComponent implements OnInit {
       </li>
 
 
+<z-------------------------------------------------------------------------
+  <step-11> view Article { article/:slug }
+
+<s11-1>: article-page.component.html
+
+<s11-2>: article-page.component.ts
+    export class ArticlePageComponent implements OnInit {
+      article: Article;
+      currentUser: User;
+      canModify: boolean;
+
+      isSubmitting = false;
+      isDeleting = false;
+
+      constructor(
+        private _route: ActivatedRoute,
+        private _userService: UserService
+      ) { }
+
+      ngOnInit() {
+        // retrieve the prefetched article
+        /*
+          data = { article: {author,.....} }
+          b/c article: ArticleResolver in article.route
+        */
+        this._route.data.subscribe(
+          (data: {article: Article} ) => {
+            console.log('data article= ', data.article);
+            this.article = data.article;
+          }
+        );
+
+        this._userService.currentUser$.subscribe(
+          (userData: User) => {
+            this.currentUser = userData;
+
+            this.canModify = (this.currentUser.username === this.article.author.username);
+          }
+        );
+      }
+
+    }
+
+<s11-3>: editor-page.component.ts
+    submitForm() {
+      ....
+      this.articlesService.save(this.article)
+        .subscribe(
+          article => {
+            this._router.navigateByUrl('/article/' + article.slug);
+          },
+
+<s11-4>: app.routes.ts
+          {
+            path: 'editor',
+            loadChildren: './editor-page/editor.module#EditorModule'
+          },
+          {
+            path: 'article',
+            loadChildren: './article/article.module#ArticleModule'
+          }
+
+<s11-5>: article-resolver.services.ts
+          resolve(
+            _route: ActivatedRouteSnapshot,
+            _state: RouterStateSnapshot
+          ): Observable<any> {
+            return this._articlesService.get(_route.params['slug'])
+              .pipe(catchError(err => this._router.navigateByUrl('/')));
+          }
+
+<s11-6>: article.module.ts
+          @NgModule({
+            imports: [
+              SharedModule,
+              RouterModule.forChild(ARTICLE_ROUTES)
+            ],
+            declarations: [
+              ArticlePageComponent
+            ],
+            providers: [
+              ArticleResolver
+            ]
+          })
+
+<s11-7>: article.routes.ts
+          export const ARTICLE_ROUTES = [
+            {
+              path: ':slug',
+              component: ArticlePageComponent,
+              resolve: {
+                article: ArticleResolver
+              }
+            }
+          ];
+
+<s11-8>: article-meta.component.html
+            - contain user info (card)
+            - is a child of article-page
+            => using @Input
+            and <ng-content>
+          <s11-1>: article-meta.component.ts
+          { @Input() article: Article;
+          }
+<s11-9>: index.ts
+
+<s11-10>: shared.module.ts
+const ARTICLES_HELPER = [
+    ArticleMetaComponent
+]
+
+
+declarations: [
+  // Step 3
+  ListErrorsComponent,
+
+  // // step 4
+  ...DIRECTIVES,
+  ...PIPES,
+
+  ...ARTICLES_HELPER
+
+],
+
+
 
 <problem------------------------------------------------------------------>
 <problem------------------------------------------------------------------>
@@ -920,3 +1045,11 @@ ngOnInit() {
 
 <solution-------: In core.module.ts >
   providers: [ ProfileService]
+
+<x--------------------------->
+<problem----
+  ERROR in ./src/app/article/article-page/article-page.component.ts
+Module not found: Error: Can't resolve './article-page.component.html'
+in 'D:\Documents\Angular-Folder\Angular-RealWorld-Example\src\app\article\article-page'
+
+<solution-------: wrong name : edit name of aritcle -> article

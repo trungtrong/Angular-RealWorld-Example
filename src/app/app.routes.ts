@@ -12,7 +12,11 @@ export const APP_ROUTES = [
   },
 
   {
-    path: 'articles',
+    path: 'editor',
     loadChildren: './editor-page/editor.module#EditorModule'
+  },
+  {
+    path: 'article',
+    loadChildren: './article/article.module#ArticleModule'
   }
 ]

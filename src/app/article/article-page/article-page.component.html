@@ -1,0 +1,55 @@
+<div class="article-page">
+
+  <div class="banner">
+    <div class="container">
+      <h1>{{ article.title }}</h1>
+
+      <!-- app-article-meta container card of user-info   -->
+      <app-article-meta [article]="article">
+        <!-- the below things represent for <ng-content> -->
+        <!--  for owner -->
+        <span [hidden]="!canModify">
+          <a href="" class="btn btn-sm btn-outline-secondary"
+            [routerLink]="['/editor', article.slug]"  >
+              <i class="icon-edit"></i>
+              Edit Article
+          </a>
+
+          <button class="btn btn-sm btn-outline-danger ml-3"
+              [ngClass]="{disabled: isDeleting}"
+              (click)="deleteArticle()" >
+            <i class="ion-trash-a"></i>
+            Delete Article
+          </button>
+        </span>
+
+        <!-- for visiter -->
+        <span [hidden]="canModify">
+
+        </span>
+
+      </app-article-meta>
+    </div>
+  </div>
+
+  <!--  content of article -->
+  <div class="container page">
+    <div class="row article-content">
+      <div class="col-md-12">
+
+        <div>
+          {{ article.body }}
+        </div>
+
+        <ul class="tag-list">
+          <li *ngFor="let tag of article.tagList"
+              class="tag-default tag-pill tag-outline">
+            {{ tag }}
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+
+</div>

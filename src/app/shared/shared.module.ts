@@ -6,9 +6,9 @@ import { RouterModule } from '@angular/router';
 
 import { ListErrorsComponent } from './list-errors/list-errors.component';
 
-import { ArticlePreviewComponent } from './article-helpers';
-import { ArticleListComponent } from './article-helpers/article-list/article-list.component';
-
+import {
+  ArticleMetaComponent
+} from './article-helpers';
 
 import {
   ShowAuthedDirective
@@ -26,6 +26,10 @@ const PIPES = [
   StringWithoutSpacePipe
 ];
 
+const ARTICLES_HELPER = [
+    ArticleMetaComponent
+]
+
 
 @NgModule({
   imports: [
@@ -42,9 +46,6 @@ const PIPES = [
 
   ],
   declarations: [
-    ArticlePreviewComponent,
-    ArticleListComponent,
-
     // Step 3
     ListErrorsComponent,
 
@@ -52,13 +53,11 @@ const PIPES = [
     ...DIRECTIVES,
     ...PIPES,
 
+    ...ARTICLES_HELPER
+
   ],
   exports: [
     CommonModule,
-
-    ArticlePreviewComponent,
-    // for Home.comp can use
-    ArticleListComponent,
 
     FormsModule,
     ReactiveFormsModule,
@@ -70,6 +69,8 @@ const PIPES = [
 
     ...DIRECTIVES,
     ...PIPES,
+
+    ...ARTICLES_HELPER
   ]
 })
 

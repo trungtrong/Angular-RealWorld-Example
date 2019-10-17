@@ -5,7 +5,7 @@ export interface Article {
   title: string;
   description: string;
   body: string;
-  tagList: string[];  // List of Pagination
+  tagList: string[];  // List of Tag
   createdAt: string;
   updatedAt: string;
   favorited: boolean;

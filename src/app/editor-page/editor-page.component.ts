@@ -17,7 +17,8 @@ export class EditorComponent implements OnInit {
 
   constructor(
     private articlesService: ArticlesService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private _router: Router
   ) {
     // use the FormBuilder to create a form group
     this.articleForm = this.fb.group({
@@ -47,7 +48,7 @@ export class EditorComponent implements OnInit {
     this.articlesService.save(this.article)
       .subscribe(
         article => {
-          console.log('article = ', article);
+          this._router.navigateByUrl('/article/' + article.slug);
         },
         error => {
           this.isSubmitting = false;

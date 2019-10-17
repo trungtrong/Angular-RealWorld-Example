@@ -14,20 +14,16 @@ export class ArticlesService {
 
   get(slug): Observable<Article> {
     return this._apiService.get('/articles' + slug)
-      .pipe(map(data => data));
+    .pipe(map(data => data));
   }
 
   // update or create an article
   save(article: Article): Observable<Article> {
-    // if we're updating an existing article
-    if (article.slug) {
-      return this._apiService.put(
-        '/article' + article.slug, article)
-      .pipe(map(data => data));
-    } else {
       return this._apiService.post('/articles', article)
-          .pipe(map(data => data));
-    }
+          .pipe(map(
+              data => data)
+          );
   }
 }
+
 
