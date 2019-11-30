@@ -20,7 +20,9 @@ export class EditableArticleResolver implements Resolve<Article> {
   ): Observable<any> {
     return this._articleService.get(_route.params['slug'])
       .pipe(
-        map(article => article),
+        map(article => {
+          return article;
+        }),
         catchError(err => this._router.navigateByUrl('/'))
       );
   }
