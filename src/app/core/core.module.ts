@@ -10,6 +10,7 @@ import {
   JwtService,
   ProfileService,
   ArticlesService,
+  CommentsService,
 } from './services';
 
 @NgModule({
@@ -30,7 +31,8 @@ import {
     AuthGuard,
     ProfileService,
 
-    ArticlesService
+    ArticlesService,
+    CommentsService
   ]
 })
 

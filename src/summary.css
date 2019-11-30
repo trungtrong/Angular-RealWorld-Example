@@ -957,6 +957,67 @@ declarations: [
 ],
 
 
+<z-------------------------------------------------------------------------
+  <step-12> <5-1> Delete Article -> article-page.component.html
+
+
+1- article-page.comp.html
+/* show only for owner */
+      <!-- [hidden]="!canModify" =>  for owner -->
+      <span [hidden]="!canModify">
+
+2 -article-page.comp.ts
+    deleteArticle() {
+      /* When clicking on <Delete> button, button will be disabled*/
+      // this.isDeleting = true;
+
+      this._articleService.delete(this.article.slug)
+        .subscribe(success => {
+          /* using {success} variable => b/c response is only status code {204} */
+            /*  go back to root url  */
+            this._router.navigateByUrl('/');
+          }, error => {
+            this.isSubmitting = false;
+          }
+        );
+
+      /*
+      - Problem: If without using .subscribe() when calling
+        Http Method => it will not happen
+      */
+    }
+
+3- article.service.ts
+
+  delete(slug: string) {
+    return this._apiService.delete('/articles/' + slug);
+  }
+
+
+<z-------------------------------------------------------------------------
+  <step-12> <5-3> Comments section at bottom of page
+
+<z-1> article-page.comp.html
+=> comment html
+
+<z-2> create <comment.model.ts>
+=> add to index.js
+
+<z-3> create <comment.service.ts>
+  + add() method
+
+=> add to index.js
+=> and declared to core.module.js
+
+<z-4> create article-comment.comp.ts
+
+<z-5> in <article-page.comp.html>
+  + design the comment place
+
+<z-6> in <article-page.comp.ts>
+  + addComment() method
+
+
 
 <problem------------------------------------------------------------------>
 <problem------------------------------------------------------------------>

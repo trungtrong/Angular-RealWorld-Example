@@ -7,7 +7,8 @@
       <!-- app-article-meta container card of user-info   -->
       <app-article-meta [article]="article">
         <!-- the below things represent for <ng-content> -->
-        <!--  for owner -->
+
+        <!-- [hidden]="!canModify" =>  for owner -->
         <span [hidden]="!canModify">
           <a href="" class="btn btn-sm btn-outline-secondary"
             [routerLink]="['/editor', article.slug]"  >
@@ -34,9 +35,9 @@
 
   <!--  content of article -->
   <div class="container page">
+    <!-- article content -->
     <div class="row article-content">
       <div class="col-md-12">
-
         <div>
           {{ article.body }}
         </div>
@@ -47,6 +48,43 @@
             {{ tag }}
           </li>
         </ul>
+      </div>
+    </div>
+
+    <!--  comment -->
+    <div class="row">
+      <div class="col-xs-12 col-md-8 offset-md-2">
+
+        <div *appShowAuthed="true">
+          <form class="card comment-form" (ngSubmit)="addComment()">
+            <fieldset [disabled]="isSubmitting">
+              <div class="card-bock">
+                <textarea class="form-control"
+                  placeholder="Write a comment..."
+                  row="3" [formControl]="commentControl">
+                </textarea>
+              </div>
+
+              <div class="card-footer">
+                <img [src]="currentUser.image" class="comment-author-img" alt="comment author img">
+                <button class="btn btn-sm btn-primary" type="submit">
+                  Post Comment
+                </button>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+
+        <div *appShowAuthed="false">
+          <a [routerLink]="['/login']">Sign in</a>
+          <span> or </span>
+          <a [routerLink]="['/register']">Sign up</a>
+          <span> to add comments on this article.</span>
+        </div>
+
+        <app-article-comment *ngFor="let comment of comments"
+          [comment]="comment" (deleteComment)="onDeleteComment(comment)">
+        </app-article-comment>
 
       </div>
     </div>

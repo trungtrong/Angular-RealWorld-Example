@@ -5,6 +5,7 @@ import { ArticlePageComponent } from './article-page/article-page.component';
 import { RouterModule } from '@angular/router';
 import { ARTICLE_ROUTES } from './article.routes';
 import { ArticleResolver } from './article-resolver.service';
+import { ArticleCommentComponent } from './article-comment/article-comment.component';
 
 @NgModule({
   imports: [
@@ -12,7 +13,8 @@ import { ArticleResolver } from './article-resolver.service';
     RouterModule.forChild(ARTICLE_ROUTES)
   ],
   declarations: [
-    ArticlePageComponent
+    ArticlePageComponent,
+    ArticleCommentComponent
   ],
   providers: [
     ArticleResolver
