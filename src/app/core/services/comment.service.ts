@@ -21,4 +21,10 @@ export class CommentsService {
       {body: payload}
     ).pipe(map(data => data));
   }
+
+  getAll(slug): Observable<Comment[]> {
+    return this._apiService.get(
+      `/articles/${slug}/comments`
+    ).pipe(map(data => data));
+  }
 }

@@ -50,6 +50,9 @@ export class ArticlePageComponent implements OnInit {
       (data: {article: Article} ) => {
         console.log('data article= ', data.article);
         this.article = data.article;
+
+        // Load the comments on this article
+        this.populateComments();
       }
     );
 
@@ -88,7 +91,8 @@ export class ArticlePageComponent implements OnInit {
     this._commentsService.add(this.article.slug, commentBody)
       .subscribe(
         comment => {
-          this.comments.push(comment);
+          // must use unshift() method, b/c in forum, new comment often added on the top
+          this.comments.unshift(comment);
           this.commentControl.reset('');
           this.isSubmitting = false;
         },
@@ -96,6 +100,11 @@ export class ArticlePageComponent implements OnInit {
           this.isSubmitting = false;
         }
       );
+  }
+
+  populateComments() {
+    this._commentsService.getAll(this.article.slug)
+      .subscribe(comments => this.comments = comments);
   }
 }
 
