@@ -106,6 +106,19 @@ export class ArticlePageComponent implements OnInit {
     this._commentsService.getAll(this.article.slug)
       .subscribe(comments => this.comments = comments);
   }
+
+  onDeleteComment(comment) {
+    console.log('babab');
+    this._commentsService.delete(comment.id, this.article.slug)
+      .subscribe(success => {
+          /*
+          - if response is success => filter the comments that is deleted
+          */
+          this.comments = this.comments.filter(item => item !== comment);
+        }
+      );
+  }
+
 }
 
 

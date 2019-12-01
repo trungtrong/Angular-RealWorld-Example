@@ -997,6 +997,7 @@ declarations: [
 <z-------------------------------------------------------------------------
   <step-12> <5-3> Comments section at bottom of page
 
+              <5-3-1> Add new comments
 <z-1> article-page.comp.html
 => comment html
 
@@ -1016,6 +1017,16 @@ declarations: [
 
 <z-6> in <article-page.comp.ts>
   + addComment() method
+
+          <5-3-3> Load all comments when going on the article
+<z-1> create getAll() in <comment.service.ts>
+
+<z-2> create populateComments() in <article-page.comp.ts>
+  + in ngOnInit() {
+    // Load the comments on this article
+    this.populateComments();
+    }
+
 
 
 

@@ -27,4 +27,9 @@ export class CommentsService {
       `/articles/${slug}/comments`
     ).pipe(map(data => data));
   }
+
+  delete(commentId, articleSlug) {
+    return this._apiService.delete(
+      `/articles/${articleSlug}/comments/${commentId}`);
+  }
 }

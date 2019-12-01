@@ -1,7 +1,10 @@
 import {
   Component,
+  EventEmitter,
   OnInit,
   Input,
+  Output,
+  OnDestroy
 } from '@angular/core';
 
 import { UserService, User, Comment } from 'src/app/core';
@@ -12,11 +15,12 @@ import { Subscription } from 'rxjs';
   templateUrl: 'article-comment.component.html'
 })
 
-export class ArticleCommentComponent implements OnInit {
+export class ArticleCommentComponent implements OnInit, OnDestroy {
   private $subscription: Subscription;
   canModify: boolean;
 
   @Input() comment: Comment;
+  @Output() deleteComment = new EventEmitter<boolean>();
 
   constructor(
     private _userService: UserService
@@ -29,6 +33,18 @@ export class ArticleCommentComponent implements OnInit {
         this.canModify = (userData.username === this.comment.author.username);
       }
     );
+  }
+
+  /*
+  - If the comment is deleted => we unsubscribe the user info
+  */
+  ngOnDestroy(): void {
+    this.$subscription.unsubscribe();
+  }
+
+  deleteClicked() {
+    console.log('delete');
+    this.deleteComment.emit(true);
   }
 
 }
