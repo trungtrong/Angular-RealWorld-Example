@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService, User } from 'src/app/core';
+import {
+  UserService,
+  User,
+  Profile
+} from 'src/app/core';
 
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -10,7 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 
 export class ProfilePageComponent implements OnInit {
-  profile;
+  profile: Profile;
   currentUser: User;
   isUser: boolean;
 
@@ -26,16 +30,20 @@ export class ProfilePageComponent implements OnInit {
     private _router: Router
   ) {
     // resolve Data from profile-resolver
-    const resolvedData: any = this._route.snapshot.data['profile'];
+    this._route.data.subscribe(
+      (data: {profile: Profile}) => {
+        this.profile = data.profile;
 
-    // if resolvedData = empty
-    if (resolvedData === {}) {
-      this.isUser = false;
-      console.error(resolvedData);
-    } else {
-      this.profile = resolvedData;
-      this.isUser = true;
-    }
+        // load the current user's data
+        this._userService.currentUser$.subscribe(
+          (userData: User) => {
+            this.currentUser = userData;
+
+            this.isUser = (this.currentUser.username === this.profile.username);
+          }
+        );
+      }
+    );
   }
 
   ngOnInit() {

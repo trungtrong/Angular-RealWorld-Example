@@ -62,7 +62,7 @@
 
         <!-- <router-outlet></router-outlet> -->
 
-        <div>
+        <div [hidden]="!isUser">
           <form>
             <!-- accept="image/*" => it's only accept image file -->
             <input type="file" name="avatar" id="avatar" style="display: none;"
