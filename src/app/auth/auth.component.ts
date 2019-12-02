@@ -64,7 +64,12 @@ export class AuthComponent implements OnInit {
     //  get value of  from FormGroup : ReactiveForm
     // include Login/Register Form
     const credentials = this.authForm.value;
-    console.log(credentials);
+
+    // remove space from username
+    if (this.authType === 'register') {
+      credentials.username = credentials.username.split(' ').join('');
+    }
+    console.log('credentials', credentials);
 
     this.userService.attemptAuth(this.authType, credentials)
           .subscribe(
