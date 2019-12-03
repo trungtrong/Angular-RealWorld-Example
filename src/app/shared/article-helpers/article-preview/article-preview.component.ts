@@ -8,7 +8,9 @@ import { Article } from '../../../core/models/article.model';
 
 export class ArticlePreviewComponent {
   @Input() article: Article;
-
   constructor() { }
-
 }
+
+/*
+- Functionality: article description (sub-content) when user go to web-page
+*/

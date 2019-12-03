@@ -1,9 +1,12 @@
 export interface ArticleListConfig {
   type: string;
-
+  /*
+  - property of filters is used to query list of article
+    following { /api/articles?favorited=trungrui09&limit=10&offset=0 }
+  */
   filters: {
-    tag?: string,
     author?: string,
+    tag?: string,
     favorited?: string,
     limit?: number,
     offset?: number

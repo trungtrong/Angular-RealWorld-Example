@@ -9,3 +9,9 @@ import { Article } from '../../../core';
 export class ArticleMetaComponent {
   @Input() article: Article;
 }
+
+/*
+- Functionality:
+  + Heading for article-page.comp.html
+  + Author info of article-list
+*/

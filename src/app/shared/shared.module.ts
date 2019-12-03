@@ -7,7 +7,9 @@ import { RouterModule } from '@angular/router';
 import { ListErrorsComponent } from './list-errors/list-errors.component';
 
 import {
-  ArticleMetaComponent
+  ArticleMetaComponent,
+  ArticleListComponent,
+  ArticlePreviewComponent
 } from './article-helpers';
 
 import {
@@ -27,7 +29,9 @@ const PIPES = [
 ];
 
 const ARTICLES_HELPER = [
-    ArticleMetaComponent
+  ArticleMetaComponent,
+  ArticleListComponent,
+  ArticlePreviewComponent
 ]
 
 

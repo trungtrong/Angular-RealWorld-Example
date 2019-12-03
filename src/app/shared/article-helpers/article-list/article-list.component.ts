@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ArticleListConfig } from 'src/app/core/models/article-list-config.model';
+import { ArticleListConfig, ArticlesService } from '../../../core';
 import { Article } from 'src/app/core/models/article.model';
 
 @Component({
@@ -8,60 +8,47 @@ import { Article } from 'src/app/core/models/article.model';
   styles: ['.page-link{cursor: pointer}']
 })
 
-export class ArticleListComponent {
+export class ArticleListComponent implements OnInit {
   // Step 1- Home
 
   // limit of article that is showed on one Page
-  // parent of ArticleList is HomeComp
-  @Input() limit: number;
-  @Input()
-      set config(config: ArticleListConfig) {
-        if (config) {
-          this.query = config;
-          this.currentPage = 1;
-          this.runQuery();
-        }
-      }
+  // parent of ArticleList is HomeComp and ProfilePageComp
+  // to display list of article
 
   // query to  Article
   query: ArticleListConfig;
+
+  // for *ngFor in DOM
   results: Article[];
+
+  // create *loading* effect when querying from server
   loading = false;
-  currentPage = 1;
-  totalPages: Array<number> = [1];
 
-  constructor() { }
+  //  from profile-article.comp.ts
+  @Input()
+    set config(config: ArticleListConfig) {
+      if (config) {
+        this.query = config;
+      }
+    }
 
+  constructor(private _articleService: ArticlesService) { }
 
-  setPageTo(pageNumber) {
-    this.currentPage = pageNumber;
+  ngOnInit() {
     this.runQuery();
   }
 
   runQuery() {
     this.loading = true;
-    this.results = [
-      {
-        slug: 'Hi',
-        title: 'Angular',
-        description: 'Learn Angular',
-        body: 'Angular is a Front-end Framework',
-        tagList: ['1', '2'],
-        createdAt: 'Lala',
-        updatedAt: '12/10',
-        favorited: true,
-        favoritesCount: 2
-        // author: Profile;
-      }
-    ];
+    this.results = [];
 
-    // create limit and offset filter (if necessary)
-    if (this.limit) {
-      this.query.filters.limit = this.limit;
-      this.query.filters.offset = this.limit * (this.currentPage - 1);
-    }
+    this._articleService.queryListArticles(this.query)
+      .subscribe(data => {
+        /* if there have response from server*/
+        this.loading = false;
+        this.results = data.articles;
+      });
   }
-
 
 }
 

@@ -1028,6 +1028,18 @@ declarations: [
     }
 
 
+<z-------------------------------------------------------------------------
+    <step-13> 6-1 – List article populated
+
+Summary:
+ - ProfileArticles (parent)
+    |
+    |_ ArticleList (child)
+          |
+          |_ Article-preview (article sub-description)
+              |_ Article-meta (=author info)
+
+
 
 
 <problem------------------------------------------------------------------>

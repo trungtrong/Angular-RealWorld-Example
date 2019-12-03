@@ -1,28 +1,15 @@
 <app-article-preview *ngFor="let article of results"
       [article]="article">
-
 </app-article-preview>
 
-<!-- in the process of loading -->
-<div class="app-article-preview"
-    [hidden]="!loading"  >
+<!-- in the process of loading
+  - Routing lazy loading
+-->
+<div class="app-article-preview" [hidden]="!loading">
   Loading articles...
 </div>
 
 <!-- if there have no article -->
-<div class="app-article-preview"
-    [hidden]="loading || results?.length"  >
+<div class="app-article-preview" [hidden]="loading || results?.length"  >
   No articles are here... yet
 </div>
-
-<nav [hidden]="loading || totalPages.length <=1">
-  <ul class="pagination">
-
-    <li class="page-item"
-        [ngClass]="{'active': pageNumber === currentPage}"
-        *ngFor="let pageNumber of totalPages"
-        (click)="setPageTo(pageNumber)">
-      <a class="page-link">{{ pageNumber }}</a>
-    </li>
-  </ul>
-</nav>

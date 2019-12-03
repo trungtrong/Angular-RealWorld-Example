@@ -60,8 +60,6 @@
           </ul>
         </div>
 
-        <!-- <router-outlet></router-outlet> -->
-
         <div [hidden]="!isUser">
           <form>
             <!-- accept="image/*" => it's only accept image file -->
@@ -75,6 +73,9 @@
             </button>
           </form>
         </div>
+
+        <!-- ProfileArticlesComponent -->
+        <router-outlet></router-outlet>
 
       </div>
 

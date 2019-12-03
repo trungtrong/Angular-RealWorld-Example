@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared';
 import { RouterModule } from '@angular/router';
 import { ProfilePageComponent } from './profile-component/profile.component';
+import { ProfileArticlesComponent } from './profile-articles/profile-articles.component';
 
 import { PROFILES_ROUTE } from './profile.routes';
-import { ProfileResolver } from './profile-resolver.service';
 
 @NgModule({
   declarations: [
-    ProfilePageComponent
+    ProfilePageComponent,
+    ProfileArticlesComponent
   ],
   imports: [
     SharedModule,
