@@ -58,7 +58,17 @@ export class ArticlesService {
     );
   }
 
+  favoriteArticle(slug): Observable<Article> {
+    return this._apiService.post('/articles/' + slug + '/favorite');
+  }
 
+  unfavoriteArticle(slug): Observable<Article> {
+    return this._apiService.delete('/articles/' + slug + '/favorite');
+  }
 }
+
+/*
+- Must Do: must call subscribe() method when calling any method in service.ts
+*/
 
 

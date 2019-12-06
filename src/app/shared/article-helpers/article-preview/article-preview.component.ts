@@ -9,6 +9,10 @@ import { Article } from '../../../core/models/article.model';
 export class ArticlePreviewComponent {
   @Input() article: Article;
   constructor() { }
+
+  onToggleFavorite(_favoritesCount) {
+    this.article.favoritesCount = _favoritesCount;
+  }
 }
 
 /*

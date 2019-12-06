@@ -20,6 +20,10 @@ import {
   StringWithoutSpacePipe
 } from './pipes';
 
+import {
+  FavoriteButtonComponent
+} from './buttons';
+
 const DIRECTIVES = [
   ShowAuthedDirective
 ];
@@ -34,7 +38,9 @@ const ARTICLES_HELPER = [
   ArticlePreviewComponent
 ]
 
-
+const BUTTONS = [
+  FavoriteButtonComponent
+]
 @NgModule({
   imports: [
     // https://stackoverflow.com/questions/45724051/template-parse-errors-cant-bind-to-directive-since-it-isnt-a-known-property-o
@@ -57,8 +63,8 @@ const ARTICLES_HELPER = [
     ...DIRECTIVES,
     ...PIPES,
 
-    ...ARTICLES_HELPER
-
+    ...ARTICLES_HELPER,
+    ...BUTTONS
   ],
   exports: [
     CommonModule,
@@ -74,7 +80,8 @@ const ARTICLES_HELPER = [
     ...DIRECTIVES,
     ...PIPES,
 
-    ...ARTICLES_HELPER
+    ...ARTICLES_HELPER,
+    ...BUTTONS
   ]
 })
 

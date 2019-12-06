@@ -1029,7 +1029,7 @@ declarations: [
 
 
 <z-------------------------------------------------------------------------
-    <step-13> 6-1 – List article populated
+    <step-13> 6-2 – List article populated
 
 Summary:
  - ProfileArticles (parent)
@@ -1038,6 +1038,21 @@ Summary:
           |
           |_ Article-preview (article sub-description)
               |_ Article-meta (=author info)
+
+<z-------------------------------------------------------------------------
+    <step-14>: 6-3- Favorited button and author’s favorited article
+
+- ArticlePreview (the article)
+    |
+    | _ ArticleMeta (author's info)
+          |
+          |_ FavoritedButton
+
+<z----idea>:
+  + if article.lovers have user._id
+  => is favorited
+  + else have never favorited
+(article.lovers[] contains user that have favorited article)
 
 
 
