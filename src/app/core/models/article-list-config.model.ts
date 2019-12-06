@@ -7,7 +7,7 @@ export interface ArticleListConfig {
   filters: {
     author?: string,
     tag?: string,
-    favorited?: string,
+    favoritedBy?: string,
     limit?: number,
     offset?: number
   };
