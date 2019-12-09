@@ -14,6 +14,8 @@ export class ProfileFavoritesComponent implements OnInit {
     filters: {}
   };
 
+  currentUrl = '';
+
   constructor(
     private _route: ActivatedRoute
   ) { }
@@ -23,6 +25,8 @@ export class ProfileFavoritesComponent implements OnInit {
       (data: {profile: Profile}) => {
         this.profile = data.profile;
         this.favoritesConfig.filters.favoritedBy = this.profile.username;
+
+        this.currentUrl = '/profile/' + this.profile.username + '/favorites'; // consistent
       }
     );
   }
