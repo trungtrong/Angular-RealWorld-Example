@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ArticleListConfig, ArticlesService, PaginationService, Pagination } from '../../../core';
 import { Article } from 'src/app/core/models/article.model';
 import { ActivatedRoute } from '@angular/router';
@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
   styles: ['.page-link{cursor: pointer}']
 })
 
-export class ArticleListComponent implements OnInit {
+export class ArticleListComponent {
   // Step 1- Home
 
   // limit of article that is showed on one Page
@@ -33,45 +33,40 @@ export class ArticleListComponent implements OnInit {
 
   //  from profile-article.comp.ts
   @Input() limit: number; // limit = amount of articles in an one pager
-  @Input() config: ArticleListConfig;
   @Input() currentUrl: string;
+
+  // using setter , for updating {config} value whenever {config} value change
+  // Way 2: using service with BehaviorSubject or Subject
+  @Input()
+    set config(config: ArticleListConfig) {
+      if (config) {
+        this.query = config; // must equal = config, not this.config
+
+        // query parameters
+        // http://localhost:4200/profile/trongrui?page=2
+        // it is going to page [2]
+        // + unary: will convert string to number
+        // when reloading the page with ?page=2 or 3 or whatever else
+        // we get the { page } query string
+        const page = +this._route.snapshot.queryParams['page'];
+
+        // http://localhost:4200/profile/trongrui
+        // => page = undefined
+        if (!page || page === 1) {
+          this.currentPage = 1;
+        } else {
+          this.currentPage = page;
+        }
+
+        this.runQuery();
+      }
+    }
 
   constructor(
     private _articleService: ArticlesService,
     private _paginationService: PaginationService,
     private _route: ActivatedRoute
   ) { }
-
-  ngOnInit() {
-    if (this.config) {
-      this.query = this.config;
-
-      // query parameters
-      // http://localhost:4200/profile/trongrui?page=2
-      // it is going to page [2]
-      // + unary: will convert string to number
-      // when reloading the page with ?page=2 or 3 or whatever else
-      // we get the { page } query string
-      const page = +this._route.snapshot.queryParams['page'];
-
-      // http://localhost:4200/profile/trongrui
-      // => page = undefined
-      if (!page || page === 1) {
-        this.currentPage = 1;
-      } else {
-        this.currentPage = page;
-      }
-
-      this.runQuery();
-      // If using <Observable>, whenever url change query parameter
-      // => the following { this._route.queryParams.subscribe} will subscribe the new data
-      // this._route.queryParams.subscribe(queryParameters => {
-      //   const page = queryParameters['page'];
-      // ...
-      // this.runQuery(); // will run gradually
-      // });
-    }
-  }
 
   runQuery() {
     this.loading = true;
@@ -82,9 +77,11 @@ export class ArticleListComponent implements OnInit {
       this.query.filters.limit = this.limit;
       this.query.filters.offset = (this.limit * (this.currentPage - 1));
     }
+
     // articles?author=trongrui&limit=1&offset=1 => for ProfileArticle
     // articles?favoritedBy=trongrui&limit=1&offset=1 => for ProfileFavorite
     // articles?limit=1&offset=1 => for Home (global feed => the all articles)
+    // article?tag=animation&limit=1&offset=1
     this._articleService.queryListArticles(this.query)
       .subscribe(data => {
         /* if there have response from server*/

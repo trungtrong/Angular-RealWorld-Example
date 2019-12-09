@@ -13,17 +13,25 @@
         <div class="feed-toggle">
 
           <ul class="nav nav-pills outline-active">
+            <!-- depend on { listConfig.filters.tag }  -->
             <li class="nav-item">
               <a class="nav-link"
-                [ngClass]="{'active': listConfig.type === 'all' && !listConfig.filters.tag}"
-                (click)="setListTo('all')">
-                Global Feed
+                  [ngClass]="{'active': listConfig.type === 'all' && !listConfig.filters?.tag}"
+                  (click)="setListTo('all')">
+                  Global Feed
+              </a>
+            </li>
+
+            <!-- tag feed -->
+            <li class="nav-item" [hidden]="!listConfig.filters?.tag">
+              <a class="nav-link active">
+                <i class="ion-pound"></i> {{ listConfig.filters.tag }}
               </a>
             </li>
           </ul>
         </div>
 
-        <app-article-list  [config]="listConfig" [limit]="1" [currentUrl]="currentUrl"></app-article-list>
+        <app-article-list [config]="listConfig" [limit]="1" [currentUrl]="currentUrl"></app-article-list>
       </div>
 
       <!-- tag component -->
@@ -33,9 +41,9 @@
 
           <div class="tag-list">
             <a *ngFor="let tag of tags"
-              (click)="setListTo('all', {tag: tag})"
-              class="tag-default tag-pill">
-              {{ tag }}
+                (click)="setListTo('all', {tag: tag})"
+                class="tag-default tag-pill">
+                {{ tag }}
             </a>
           </div>
 

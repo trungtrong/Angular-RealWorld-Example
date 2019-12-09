@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.setListTo('all');
+    this.setListTo('all', {});
     this.currentUrl = '/'; // home
 
     this._tagsService.getAll()
@@ -38,5 +38,12 @@ export class HomeComponent implements OnInit {
       type,
       filters
     };
+
+    /*
+     if listConfig.filters.tag !== undefined
+     => filters = { tag: tag }
+     => go to /articles?tag=hello&limit=1&offset=0
+     => article-list.comp is on
+    */
   }
 }
