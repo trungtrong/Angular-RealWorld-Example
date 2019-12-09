@@ -4,7 +4,12 @@
     <ul *ngIf="pager !== {} && pager?.pages && pager?.pages.length" class="pagination">
       <!-- previous button -->
       <li class="page-item" [hidden]="pager.currentPage === 1">
-        <a class="page-link" (click)="setPageTo(pager.currentPage - 1)">
+        <a *ngIf="pager.currentPage - 1 === 1" class="page-link" (click)="setPageTo(pager.currentPage - 1)"
+          [routerLink]="currentUrl">
+          <i class="ion-chevron-left"></i>
+        </a>
+        <a *ngIf="pager.currentPage - 1 !== 1" class="page-link" (click)="setPageTo(pager.currentPage - 1)"
+          [routerLink]="currentUrl" [queryParams]="{'page': pager.currentPage - 1}">
           <i class="ion-chevron-left"></i>
         </a>
       </li>
@@ -29,7 +34,8 @@
 
       <!-- next button -->
       <li class="page-item" [hidden]="pager.currentPage === pager.totalPages">
-        <a class="page-link" (click)="setPageTo(pager.currentPage + 1)">
+        <a class="page-link" (click)="setPageTo(pager.currentPage + 1)"
+          [routerLink]="currentUrl" [queryParams]="{'page': pager.currentPage + 1}">
           <i class="ion-chevron-right"></i>
         </a>
       </li>
