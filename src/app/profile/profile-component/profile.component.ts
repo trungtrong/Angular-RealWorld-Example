@@ -23,6 +23,7 @@ export class ProfilePageComponent implements OnInit {
   File Interface so that we have this.avatar.name
   */
   avatar: File;
+  page = 'post'; // Post page or Favorite page
 
   constructor(
     private _userService: UserService,
@@ -67,6 +68,10 @@ export class ProfilePageComponent implements OnInit {
         },
         err => console.log(err)
       );
+  }
+
+  isPage(page: string = 'post') {
+    this.page = page;
   }
 }
 

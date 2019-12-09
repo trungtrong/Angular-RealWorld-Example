@@ -1151,6 +1151,22 @@ Summary:
 
 => <ERROR>: i have never solved this problem
 
+<solve--> 12/9/2019: fix the above problem
+=> i don't use [routerLinkActive] and { queryParamsHandling="merge" }
+  to active the { post } page or { favorite } page
+
+<profile-comp-html>
+    <a class="nav-link"
+      [ngClass]="{active: page === 'post'}"
+      (click)="isPage('post')"
+      [routerLink]="['/profile', profile?.username]">
+    My Posts
+    </a>
+
+<profile-comp-ts>
+  isPage(page: string = 'post') {
+    this.page = page;
+  }
 
 <problem------------------------------------------------------------------>
 <problem------------------------------------------------------------------>

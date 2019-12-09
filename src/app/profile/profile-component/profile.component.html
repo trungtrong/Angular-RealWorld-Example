@@ -41,8 +41,8 @@
           <ul class="nav nav-pills outline-active">
             <li class="nav-item">
               <a class="nav-link"
-                 routerLinkActive="active"
-                 [routerLinkActiveOptions]="{ exact: true }"
+                 [ngClass]="{active: page === 'post'}"
+                 (click)="isPage('post')"
                  [routerLink]="['/profile', profile?.username]">
                  My Posts
               </a>
@@ -50,8 +50,8 @@
 
             <li class="nav-item">
               <a class="nav-link"
-                 routerLinkActive="active"
-                 [routerLinkActiveOptions]="{ exact: true }"
+                 [ngClass]="{active: page === 'favorite'}"
+                 (click)="isPage('favorite')"
                  [routerLink]="['/profile', profile?.username, 'favorites']">
                  Favorited Posts
               </a>
