@@ -56,7 +56,7 @@ export class ArticleListComponent implements OnInit {
 
       // http://localhost:4200/profile/trongrui
       // => page = undefined
-      if (!page) {
+      if (!page || page === 1) {
         this.currentPage = 1;
       } else {
         this.currentPage = page;
@@ -82,7 +82,9 @@ export class ArticleListComponent implements OnInit {
       this.query.filters.limit = this.limit;
       this.query.filters.offset = (this.limit * (this.currentPage - 1));
     }
-
+    // articles?author=trongrui&limit=1&offset=1 => for ProfileArticle
+    // articles?favoritedBy=trongrui&limit=1&offset=1 => for ProfileFavorite
+    // articles?limit=1&offset=1 => for Home (global feed => the all articles)
     this._articleService.queryListArticles(this.query)
       .subscribe(data => {
         /* if there have response from server*/
