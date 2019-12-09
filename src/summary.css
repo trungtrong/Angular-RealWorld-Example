@@ -1054,7 +1054,102 @@ Summary:
   + else have never favorited
 (article.lovers[] contains user that have favorited article)
 
+<z-------------------------------------------------------------------------
+    <step-15>: <6-5> Pagination Article List
 
+  ArticleList
+    |
+    |_ Pagination.component.ts
+************NOTE: It all started, i would code { pagination } component
+    into article-list.component
+    + when it is successful, i have maked { pagination } component individually
+
+  <step-1> Create { Pagination } Component
+1/ pagination.service.ts
++ make/calculate { pages: 1 2 3 4 5 or 2 3 4 5 6 }
+2/ pagination.comp.html
+3/ pagination.comp.ts
+  + setPageTo() provide { currentPage } from {page} button
+
+4/ pagination.model
+
+  <step-2> add-in to { article-list } component
+
+  <step-3>  adding link {currentURL + query: ?page=2 or 3 or 4} that based on the
+    pageNumber of { page } button
+  1/ currentURL is taken from its parent Component { ProfileArticle}
+  => profileArticle: profile/:username
+  => using @Input()
+
+  **NOTE: ProfileFavorite: url = profile/:username/favorite
+
+  2/ Must add { link + query params } in HMTL for each { page button }
+
+  <a *ngIf="pageNumber!== 1" class="page-link" (click)="setPageTo(pageNumber)"
+      [routerLink]="currentUrl" [queryParams]="{'page': pageNumber}">
+    {{ pageNumber }}
+  </a>
+
+  <step-4> when reloading the  http://localhost:4200/profile/trongrui?page=2
+  => we must take { query parameters } from url and go to the { page button [2] }
+  => Idea: this.currentPage = {page=2}
+
+    ngOnInit() {
+      if (this.config) {
+        this.query = this.config;
+
+        /* query parameters
+         http://localhost:4200/profile/trongrui?page=2
+        _ it is going to page [2]
+         <+> unary: will convert string to number (MUST BE)
+        _ // when reloading the page with ?page=2 or 3 or whatever else
+        // we get the { page } query string
+        // and  {page = 2} button will be active
+
+        // http://localhost:4200/profile/trongrui
+        // => page = undefined
+        */
+        const page = +this._route.snapshot.queryParams['page'];
+
+        if (!page) {
+          this.currentPage = 1;
+        } else {
+          this.currentPage = page;
+        }
+
+        this.runQuery();
+        /* If using <Observable>, whenever we change { page } button =>  url change query parameter
+        => the following { this._route.queryParams.subscribe} will subscribe the new data
+        this._route.queryParams.subscribe(queryParameters => {
+          const page = queryParameters['page'];
+        ...
+        this.runQuery(); // will run gradually
+        }); */
+      }
+    }
+
+
+    <problem-1-step-15>: <6-5>
++ when going to {favorite article} by http://localhost:4200/profile/trongrui/favorites?page=7
+=> { page =7 }
++ in {my posts article} => we receive http://localhost:4200/profile/trongrui?page=7
+=>but maxPage = 6 => page =  1->6
+==> ERROR
+==> b/c we use { queryParamsHandling="merge" } in profile.comp.html
+          /* how to use "routerLinkActive" with queryParams in angular
+          https://angular.io/api/router/RouterLinkActive#routerLinkActiveOptions
+          https://angular.io/api/router/RouterLink
+          => it will add { active } class => if routerLink is exact
+          => Solution: queryParamsHandling="merge"
+
+          https://github.com/angular/angular/issues/13205#issuecomment-392648730
+
+          + Ex: http://localhost:4200/profile/trongrui?page=4
+          => routerink = http://localhost:4200/profile/trongrui?page=4
+          => { active } class is enable
+          */
+
+=> <ERROR>: i have never solved this problem
 
 
 <problem------------------------------------------------------------------>

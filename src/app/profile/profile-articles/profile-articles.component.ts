@@ -24,10 +24,9 @@ export class ProfileArticlesComponent implements OnInit {
     type: 'all',
     filters: {}
   };
+  currentUrl = '';
 
-  constructor(
-    private _route: ActivatedRoute,
-  ) { }
+  constructor(private _route: ActivatedRoute) { }
 
   ngOnInit() {
     /*
@@ -43,9 +42,9 @@ export class ProfileArticlesComponent implements OnInit {
 
         // Only method I found to refresh article load on swap
         this.articlesConfig.filters.author = this.profile.username;
+
+        this.currentUrl = '/profile/' + this.profile.username; // consistent
       }
     );
-
   }
-
 }

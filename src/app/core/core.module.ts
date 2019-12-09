@@ -11,6 +11,7 @@ import {
   ProfileService,
   ArticlesService,
   CommentsService,
+  PaginationService
 } from './services';
 
 @NgModule({
@@ -32,7 +33,9 @@ import {
     ProfileService,
 
     ArticlesService,
-    CommentsService
+    CommentsService,
+
+    PaginationService
   ]
 })
 

@@ -18,3 +18,12 @@
 <div class="app-article-preview" [hidden]="loading || results?.length"  >
   No articles are here... yet
 </div>
+
+<app-pagination *ngIf="results?.length && !loading"
+    [pager]="pager" [currentUrl]="currentUrl"
+    (currentPage)="getCurrentPage($event)">
+</app-pagination>
+<!--
+  if we don't use *ngIf="results.length !== 0" in <app-pagination>
+    => <app-pagination> will be loaded before <app-article-preview> ===> FAIL
+ -->

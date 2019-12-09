@@ -1,0 +1,38 @@
+<div class="container">
+  <nav class="text-center">
+    <!-- pagination -->
+    <ul *ngIf="pager !== {} && pager?.pages && pager?.pages.length" class="pagination">
+      <!-- previous button -->
+      <li class="page-item" [hidden]="pager.currentPage === 1">
+        <a class="page-link" (click)="setPageTo(pager.currentPage - 1)">
+          <i class="ion-chevron-left"></i>
+        </a>
+      </li>
+
+      <!-- list pages -->
+      <!-- Note: can't use { === } strict equal -->
+      <li class="page-item" *ngFor="let pageNumber of pager.pages"
+          [ngClass]="{active: pager.currentPage === pageNumber}">
+        <a *ngIf="pageNumber === 1" class="page-link" (click)="setPageTo(pageNumber)"
+          [routerLink]="currentUrl">
+          {{ pageNumber }}
+        </a>
+        <!-- passing query string parameters in HTML
+          https://angular.io/api/router/RouterLink
+          https://www.youtube.com/watch?v=KefdTtsoKjY
+        -->
+        <a *ngIf="pageNumber!== 1" class="page-link" (click)="setPageTo(pageNumber)"
+          [routerLink]="currentUrl" [queryParams]="{'page': pageNumber}">
+          {{ pageNumber }}
+        </a>
+      </li>
+
+      <!-- next button -->
+      <li class="page-item" [hidden]="pager.currentPage === pager.totalPages">
+        <a class="page-link" (click)="setPageTo(pager.currentPage + 1)">
+          <i class="ion-chevron-right"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>

@@ -24,6 +24,8 @@ import {
   FavoriteButtonComponent
 } from './buttons';
 
+import { PaginationComponent } from './pagination/pagination.component';
+
 const DIRECTIVES = [
   ShowAuthedDirective
 ];
@@ -36,11 +38,12 @@ const ARTICLES_HELPER = [
   ArticleMetaComponent,
   ArticleListComponent,
   ArticlePreviewComponent
-]
+];
 
 const BUTTONS = [
   FavoriteButtonComponent
-]
+];
+
 @NgModule({
   imports: [
     // https://stackoverflow.com/questions/45724051/template-parse-errors-cant-bind-to-directive-since-it-isnt-a-known-property-o
@@ -64,7 +67,9 @@ const BUTTONS = [
     ...PIPES,
 
     ...ARTICLES_HELPER,
-    ...BUTTONS
+    ...BUTTONS,
+
+    PaginationComponent
   ],
   exports: [
     CommonModule,
@@ -81,7 +86,9 @@ const BUTTONS = [
     ...PIPES,
 
     ...ARTICLES_HELPER,
-    ...BUTTONS
+    ...BUTTONS,
+
+    PaginationComponent
   ]
 })
 

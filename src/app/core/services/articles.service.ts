@@ -36,11 +36,12 @@ export class ArticlesService {
     return this._apiService.delete('/articles/' + slug);
   }
 
-  queryListArticles(config: ArticleListConfig): Observable<{articles: Article[]}> {
+  queryListArticles(config: ArticleListConfig): Observable<{articles: Article[], articlesCount: number}> {
     // convert any filters over to Angular's URLSearchParameter
     /*
     - property of filters is used to query list of article
       following { /api/articles?favorited=trongrui09&limit=10&offset=0 }
+      return {articles: [], articlesCount}
     */
     const params = {};
 

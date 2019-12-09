@@ -8,3 +8,5 @@ export * from './profile.service';
 export * from './articles.service';
 
 export * from './comment.service';
+
+export * from './pagination.service';
