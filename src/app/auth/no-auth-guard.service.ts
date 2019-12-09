@@ -16,8 +16,16 @@ export class NoAuthGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean> {
     return this._userService.isAuthenticated$.pipe(
+      /*
+        take the first info of isAuthenticate stream
+        => = false (default)
+      */
       take(1),
       map(isAuth => !isAuth)
-    )
+    );
   }
 }
+
+/*
+- for User who are not a member
+*/
