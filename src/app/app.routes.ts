@@ -1,6 +1,11 @@
-import { SETTINGS_ROUTE } from './settings/settings.route';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 export const APP_ROUTES = [
+  {
+    path: '',
+    loadChildren: './home/home.module#HomeModule'
+  },
+
   {
     path: 'settings',
     loadChildren: './settings/settings.module#SettingsModule'
@@ -18,5 +23,10 @@ export const APP_ROUTES = [
   {
     path: 'article',
     loadChildren: './article/article.module#ArticleModule'
+  },
+
+  {
+    path: '**',
+    component: PageNotFoundComponent
   }
 ]
