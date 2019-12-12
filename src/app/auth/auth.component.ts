@@ -15,6 +15,12 @@ export class AuthComponent implements OnInit {
   submitted = false;
   authForm: FormGroup;
 
+  messageError = {
+    username: {success: true, msg: ''},
+    email: {success: true, msg: ''},
+    login: {success: true, msg: ''}
+  };
+
   constructor(private route: ActivatedRoute,
               private fb: FormBuilder,
               private router: Router,
@@ -69,13 +75,27 @@ export class AuthComponent implements OnInit {
     if (this.authType === 'register') {
       credentials.username = credentials.username.split(' ').join('');
     }
-    console.log('credentials', credentials);
 
     this.userService.attemptAuth(this.authType, credentials)
           .subscribe(
-            data => this.router.navigateByUrl('/'),
+            data => {
+              this.loading = false;
+              this.router.navigateByUrl('/');
+            },
             err => {
               this.loading = false;
+              // if register is fail
+              if (this.authType === 'register') {
+                this.messageError = err;
+              } else {
+                // if login is fail
+                if (err === 'Unauthorized') {
+                  this.messageError.login = {
+                    success: false,
+                    msg: 'Email or Password is invalid'
+                  };
+                }
+              }
             }
           );
   }

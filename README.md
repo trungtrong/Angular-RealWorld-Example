@@ -17,7 +17,8 @@
 ### Task List
 * 1 - The brief Home Page
 * 2 - Sign in/Sign up pages (URL: /#/login, /#/register )
-  - uses JWT (store the token in localStorage) for authentication
+  - 2-1- uses JWT (store the token in localStorage) for authentication
+  - 2-2- Sign in / Sign up validation using server validation
 * 3 - Settings page (URL: /#/settings )
   - for edit user's info
 * 4 - Editor page to create/view/edit articles (URL: /#/editor, /#/editor/article-slug-here )
